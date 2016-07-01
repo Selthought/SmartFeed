@@ -1,5 +1,7 @@
 package by.mvcom.smartfeed.util;
 
+import by.mvcom.smartfeed.util.http.HttpRequest;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -13,25 +15,13 @@ import java.util.Map;
  */
 public class HttpUtil {
 
-    public static String sendPost(Map<String, Object> params, String sUrl) throws UtilException{
+    public static String sendPost(HttpRequest request) throws UtilException{
         try {
-            URL url = new URL(sUrl);
-
-            StringBuilder postData = new StringBuilder();
-            for (Map.Entry<String, Object> param : params.entrySet()) {
-                if (postData.length() != 0) postData.append('&');
-                postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-                postData.append('=');
-                postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
-            }
-            byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+            URL url = new URL(request.getUrl());
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+            request.fillConnection(conn);
             conn.setDoOutput(true);
-            conn.getOutputStream().write(postDataBytes);
 
             Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
             System.out.println("Response cod: " + conn.getResponseCode());
