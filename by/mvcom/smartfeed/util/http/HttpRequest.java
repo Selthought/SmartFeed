@@ -7,8 +7,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
@@ -23,32 +21,47 @@ public class HttpRequest {
     private ArrayList<HttpParam> params;
     private ArrayList<HttpParam> headers;
 
-    public ArrayList<Cookie> getCookies() {
-        return cookies;
+    public HttpRequest(String url){
+        this.url = url;
+        cookies = new ArrayList<>();
+        params = new ArrayList<>();
+        headers = new ArrayList<>();
     }
 
-    public void setCookies(ArrayList<Cookie> cookies) {
-        this.cookies = cookies;
+    public ArrayList<Cookie> getCookies() {
+        return cookies;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public ArrayList<HttpParam> getParams() {
         return params;
     }
 
-    public void setParams(ArrayList<HttpParam> params) {
-        this.params = params;
-    }
-
     public ArrayList<HttpParam> getHeaders() {
         return headers;
+    }
+
+    public void addCookie(Cookie cookie){
+        cookies.add(cookie);
+    }
+
+    public void addParam(HttpParam param){
+        params.add(param);
+    }
+
+    public void addHeaderParam(HttpParam param){
+        headers.add(param);
+    }
+
+    public void setCookies(ArrayList<Cookie> cookies) {
+        this.cookies = cookies;
+    }
+
+    public void setParams(ArrayList<HttpParam> params) {
+        this.params = params;
     }
 
     public void setHeaders(ArrayList<HttpParam> headers) {
@@ -81,6 +94,7 @@ public class HttpRequest {
             postData.append('=');
             postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
         }
+        System.out.println(postData.toString());
         return postData.toString().getBytes("UTF-8");
     }
 

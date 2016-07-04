@@ -1,5 +1,7 @@
 package by.mvcom.smartfeed.socnet.vkapi;
 
+import by.mvcom.smartfeed.util.http.HttpParam;
+import by.mvcom.smartfeed.util.http.HttpRequest;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.util.Map;
@@ -51,12 +53,12 @@ public class VKRequest {
         return null;
     }
 
-    public void makeRequestParams(Map<String, Object> params){
-        params.put(CAPTCHA_SID, captchaSid);
-        params.put(CAPTCHA_KEY, captchaKey);
-        params.put(IP_H, iph);
-        params.put(LG_H, lgh);
-        params.put(ORIGIN, origin);
+    public void makeRequestParams(HttpRequest request){
+        request.addParam(new HttpParam(CAPTCHA_SID, captchaSid));
+        request.addParam(new HttpParam(CAPTCHA_KEY, captchaKey));
+        request.addParam(new HttpParam(IP_H, iph));
+        request.addParam(new HttpParam(LG_H, lgh));
+        request.addParam(new HttpParam(ORIGIN, origin));
     }
 
     public String getCaptchaSid() {
